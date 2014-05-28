@@ -1,0 +1,35 @@
+@-ms-viewport { width: device-width; }
+@-o-viewport { width: device-width; }
+@viewport { width: device-width; }
+
+* {
+	margin: 0;
+	padding: 0;
+	&,
+	&:before,
+	&:after {
+		box-sizing: border-box;
+	}
+}
+
+%selection {
+	// background-color:;
+	// color:;
+	// text-shadow:;
+}
+::moz-selection { @extend %selection !optional; }
+::selection { @extend %selection !optional; }
+
+html {
+
+}
+
+body {
+	font: 62.5%/1.25 $regular;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img {
+	max-width:100%;
+}

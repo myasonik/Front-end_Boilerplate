@@ -1,0 +1,5 @@
+mixin insertSvg(img)
+	+if-ie("<!--[if lt IE 9]>")
+		img(src= 'imgs/' + img + '.png', width= attributes.width, height= attributes.height, alt= attributes.alt)
+	+if-ie("<!--[if gte IE 9]><!-->", true)
+		img(src= 'imgs/' + img + '.svg', width= attributes.width, height= attributes.height, alt= attributes.alt)

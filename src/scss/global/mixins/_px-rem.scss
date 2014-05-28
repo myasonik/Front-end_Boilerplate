@@ -1,0 +1,62 @@
+@mixin px-rem($property, $values, $root-font-size: $base-font-size) {
+    $px:    ();
+    $rem:   ();
+
+    $font-size: parseInt($root-font-size);
+ 
+    @each $value in $values {
+      $value-type: type-of($value); 
+        @if $value == 0 or $value-type != 'number' and $value-type != 'list' { // pass through
+            $px : append($px, $value);
+            $rem: append($rem, $value);
+        } @else if type-of($value) == 'list' { // list
+            @each $val in $value {
+                @if $val == 0 or type-of($val) != 'number' { // pass through
+                    $px : append($px, $val);
+                    $rem: append($rem, $val);
+                } @else { // convert
+                    $unit: unit($val);
+                    $unitless-val: parseInt($val);
+                @if $unit == 'px' {
+                    $px : append($px,  $val);
+                    $rem: append($rem, ($unitless-val / $font-size + rem));
+                } @else if $unit == 'rem' {
+                    $px : append($px,  ($unitless-val * $font-size + px));
+                    $rem: append($rem, $val);
+                } @else {
+                    $px : append($px, $val);
+                    $rem: append($rem, $val);
+                }
+              }
+            }
+            @if $value != nth($values, length($values)) {
+                $px : append($px, unquote(','));
+                $rem: append($rem, unquote(','));
+            }
+        } @else { // convert
+            $unit: unit($value);
+            $unitless-val: parseInt($value);
+            
+            @if $unit == 'px' {
+                $px : append($px,  $value);
+                $rem: append($rem, ($unitless-val / $font-size + rem));
+            } @else if $unit == 'rem' {
+                $px : append($px,  ($unitless-val * $font-size + px));
+                $rem: append($rem, $value);
+            } @else {
+                $px : append($px, $value);
+                $rem: append($rem, $value);
+            }
+        }
+    }
+    
+    @if $px == $rem {
+        #{$property}: $px;
+    } @else {
+        @if $ie8 {
+            #{$property}: $px;
+        } @else {
+            #{$property}: $rem;
+        }
+    }
+}

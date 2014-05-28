@@ -1,0 +1,31 @@
+// Example
+// p {
+//   @include ps-drop-shadow((
+//     distance: 3px,
+//     spread: 3%,
+//     size: 3px,
+//     opacity: 15%,
+//     color: #000
+//   ));
+// }
+
+// Defualts: (
+//   angle: 120,
+//   spread: 0,
+//   distance: 0,
+//   size: 0,
+//   choke, 0,
+//   color: #fff
+// )
+
+// add defualt (inset: false)
+@mixin ps-drop-shadow($conf) {
+	$conf: map-merge((inset: false), $conf);
+	box-shadow: ps-shadow($conf);
+}
+
+// add defualt (inset: true)
+@mixin ps-inner-shadow($conf) {
+	$conf: map-merge((inset: true), $conf);
+	box-shadow: ps-shadow($conf);
+}
