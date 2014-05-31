@@ -6,6 +6,7 @@ var gulp			= require('gulp'),
 	browserSync		= require('browser-sync'),
 	connect			= require('gulp-connect'),
 	plumber			= require('gulp-plumber'),
+	filter			= require('gulp-filter'),
 	// (S)CSS STUFF
 	sass 			= require('gulp-ruby-sass'),
 	autoprefixer 	= require('gulp-autoprefixer'),
@@ -29,7 +30,9 @@ var gulp			= require('gulp'),
 		imgs: 'src/images/**/*.{png,jpg,jpeg,gif,svg}',
 		js: 'src/js/**/*.js',
 		fonts: 'src/fonts/**/*.{eot,svg,ttf,woff}'
-	}
+	},
+	mainSass = filter('**/main.scss'),
+	ieSass = filter('**/main-ie.scss'),
 	production = false;
 
 gulp.task('browser-sync', function() {
@@ -47,14 +50,19 @@ gulp.task('connect', function() {
 });
 
 gulp.task('sass', function() {
-	gulp.src(paths.scss)
+	gulp.src('src/scss/main.scss')
 		.pipe(plumber())
 		.pipe(sass({ loadPath: ['./bower_components'] }))
-		.pipe(autoprefixer('> 0%'))
+		.pipe(mainSass)
+			.pipe(autoprefixer('> 5%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'))
+			.pipe(mainSass.restore())
+		.pipe(ieSass)
+			.pipe(autoprefixer('ie 8'))
+			.pipe(ieSass.restore())
 		.pipe(should(production, cmq({ log: true })))
 		.pipe(should(production, rename({suffix: '.min'})))
 		.pipe(should(production, minifycss()))
-		.pipe(gulp.dest('output/'))
+		.pipe(gulp.dest('output/'));
 });
 
 gulp.task('ie8', function() {
