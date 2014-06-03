@@ -1,0 +1,111 @@
+// pass in an opacity from 0 to 1
+// ie8 filter and spec versions outputted
+@mixin ie8-opacity($opacity) {
+	@warn 'ie8-opacity expects opacity to be from 0 to 1';
+	@if $ie8 {
+		$opacity: $opacity * 100;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity})";
+	} @else {
+		opacity: $opacity;
+	}
+}
+
+@mixin ie8-background-img-cover($src) {
+	@if $ie8 {
+		@warn 'Links will not be clickable within region of background-size: cover;';
+		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='#{$src}', sizingMethod='scale')";
+	} @else {
+		background-image: url('#{$src}');
+		background-size: cover;
+	}
+}
+
+// Modified from http://thesassway.com/intermediate/mixins-for-semi-transparent-colors
+// $color to be either color value or map (target: color-value, background: color-value)
+// background is optional but you probably don't want to be passing in a map then
+// default background value is white 
+@mixin ie8-fake-alpha($property, $color) {
+	$target: '';
+	$background: '';
+	@if type-of($color) == 'map' {
+		$color: map-merge((background: white), $color);
+		$target: map-get($color, target);
+		$background: map-get($color, background);
+	} @else if type-of($color) == 'color' {
+		$target: $color;
+		$background: white;
+	} @else {
+		@warn 'Expecting a color of a map (target: color, background, color)'
+	}
+
+	$percent: alpha($target) * 100%;
+	$opaque-target: fade-in($target, 1);
+	$opaque-color: mix($opaque-target, $background, $percent);
+	@if $target == $opaque-color or alpha($target) == 1 {
+		#{$property}: $target;
+	} @else  {
+		@if $ie8 {
+			#{$property}: $opaque-color;
+		} @else {
+			#{$property}: $target;
+		}
+	}
+}
+
+// pass in a color with alpha
+// ie8 filter background generated
+@mixin ie8-background-alpha($color) {
+	@if $ie8 {
+		$color: ie-hex-str($color);
+		-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$color}', endColorstr='#{$color}', GradientType=0);
+	} @else {
+		background-color: $color;
+	}
+}
+
+// pass in a gradient as a list and an overrides map optionally
+// best attempt for an ie8 gradient generated
+// uses first and last colors only and is either vertical or horizontal
+// valid keys in overrides map are: startColor, endColor, gradType
+// gradType is either horizontal or vertical
+@mixin ie8-background-gradient($gradient, $overrides: ()) {
+	@if $ie8 {
+		$direction: nth($gradient, 1);
+		$gradType: 0; // 0 is vertical; 1 is horizontal
+
+		@if type-of($direction) == 'number' {
+			$direction: to-deg(abs($directions));
+			@if ($direction >= 0 and $direction < 90) or
+				($direction >= 180 and $direction < 270) {
+				$gradType: 1;
+			}
+		} @else {
+			$direction: inspect($direction);
+			@if str-index($direction, 'top') == null and
+				str-index($direction, 'bottom') == null { // start right and go left
+				$gradType: 1;
+			} @else {
+				@if (str-index($direction, 'top') != null and str-index($direction, 'right') != null) or 
+					(str-index($direction, 'bottom') != null and str-index($direction, 'left') != null) {
+					$gradType: 1;
+				}
+			}
+		}
+
+		@if map-has-key($overrides, gradType) {
+			@if map-get($overrides, gradType) == 'horizontal' {
+				$gradType: 1;
+			} @else if map-get($overrides, gradType) == 'vertical' {
+				$gradType: 0;
+			} @else {
+				@warn 'gradType should be either "horizontal" or "vertical".';
+			}
+		}
+		$startColor: ie-hex-str(map-get(map-merge((startColor: nth($gradient, 2)), $overrides), startColor));
+		$endColor: ie-hex-str(map-get(map-merge((endColor: nth($gradient, length($gradient))), $overrides), endColor));
+
+		-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$startColor}', endColorstr='#{$endColor}', GradientType=#{$gradType});
+	} @else {
+		background-image: linear-gradient($gradient);
+	}
+}

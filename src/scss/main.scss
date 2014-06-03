@@ -8,7 +8,9 @@
 @import 'global/functions/math';
 @import 'global/functions/parseInt';
 @import 'global/functions/photoshop';
+@import 'global/functions/toDegrees';
 
+@import 'global/mixins/ie-filters';
 @import 'global/mixins/photoshop';
 @import 'global/mixins/px-rem';
 
@@ -16,3 +18,7 @@
 
 @import 'global/vars';
 @import 'global/base';
+
+p {
+	@include ie8-background-gradient((to right, green, orange), (gradType: 'horizontal'));
+}

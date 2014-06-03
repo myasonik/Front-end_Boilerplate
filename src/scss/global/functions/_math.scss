@@ -1,7 +1,7 @@
 // mathsass by terkel
 // https://github.com/terkel/mathsass
 
-$PI:    3.141592653589793;
+$PI: 3.141592653589793;
 
 // Strip unit from a number
 @function strip-unit ($number) {
@@ -63,7 +63,7 @@ $PI:    3.141592653589793;
 
 // Convert deg to rad
 @function deg-to-rad ($deg, $unit: true) {
-  @return parseInt($deg) * $PI / 180 * if($unit, 1rad, 1);
+  @return strip-unit($deg) * $PI / 180 * if($unit, 1rad, 1);
 }
 
 // Convert to unitless rad
