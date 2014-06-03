@@ -6,7 +6,6 @@ var gulp			= require('gulp'),
 	browserSync		= require('browser-sync'),
 	connect			= require('gulp-connect'),
 	plumber			= require('gulp-plumber'),
-	filter			= require('gulp-filter'),
 	// (S)CSS STUFF
 	sass 			= require('gulp-ruby-sass'),
 	autoprefixer 	= require('gulp-autoprefixer'),
@@ -50,15 +49,10 @@ gulp.task('connect', function() {
 });
 
 gulp.task('sass', function() {
-	gulp.src('src/scss/main.scss')
+	gulp.src('src/scss/**/*.scss')
 		.pipe(plumber())
 		.pipe(sass({ loadPath: ['./bower_components'] }))
-		.pipe(mainSass)
-			.pipe(autoprefixer('> 5%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'))
-			.pipe(mainSass.restore())
-		.pipe(ieSass)
-			.pipe(autoprefixer('ie 8'))
-			.pipe(ieSass.restore())
+		.pipe(autoprefixer('> 0%'))
 		.pipe(should(production, cmq({ log: true })))
 		.pipe(should(production, rename({suffix: '.min'})))
 		.pipe(should(production, minifycss()))
