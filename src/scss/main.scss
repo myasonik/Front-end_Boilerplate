@@ -1,4 +1,5 @@
-// IMPORTS
+@import 'breakpoint-sass/stylesheets/breakpoint';
+
 @import 'global/extends/clearfix';
 @import 'global/extends/hide-text';
 @import 'global/extends/pseudo';
@@ -18,7 +19,3 @@
 
 @import 'global/vars';
 @import 'global/base';
-
-p {
-	@include ie8-background-gradient((to right, green, orange), (gradType: 'horizontal'));
-}

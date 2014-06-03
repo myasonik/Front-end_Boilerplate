@@ -108,8 +108,12 @@ gulp.task('images', function() {
 });
 
 gulp.task('copy', function() {
+	// Fonts
 	gulp.src(paths.fonts)
 		.pipe(gulp.dest('output/fonts'));
+	// JQuery fallback
+	gulp.src('bower_components/jquery/jquery.min.js')
+		.pipe(gulp.dest('output/js/'));
 });
 
 gulp.task('clean', function() {
