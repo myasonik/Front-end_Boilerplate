@@ -17,25 +17,25 @@ html(lang="en")
 
 		+if-ie("<!--[if lt IE 9]>")
 			if !production
-				link(rel='stylesheet', href='styles-ie.css')
+				link(rel='stylesheet', href='main-ie.css')
 			else
-				link(rel='stylesheet', href='styles-ie.min.css')
+				link(rel='stylesheet', href='main-ie.min.css')
 			script(src='js/ie8.min.js')
 
 		+if-ie("<!--[if gte IE 9]><!-->", true)
 			if !production
-				link(rel='stylesheet', href='styles.css')
+				link(rel='stylesheet', href='main.css')
 			else
-				link(rel='stylesheet', href='styles.min.css')
+				link(rel='stylesheet', href='main.min.css')
 
 	body
 		block body
 
 	block scripts
+	script(src='//code.jquery.com/jquery-1.11.0.min.js')
+	script(type='text/javascript').
+		window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>');
 	if !target
 		script(src='js/main.js')
 	else
 		script(src='js/main.min.js')
-	script(src='//code.jquery.com/jquery-1.11.0.min.js')
-	script(type='text/javascript').
-		window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>');

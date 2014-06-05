@@ -26,12 +26,10 @@ var gulp			= require('gulp'),
 	paths = {
 		jade: 'src/jade/**/*.jade',
 		scss: 'src/scss/**/*.scss',
-		imgs: 'src/images/**/*.{png,jpg,jpeg,gif,svg}',
+		imgs: 'src/imgs/**/*.{png,jpg,jpeg,gif,svg}',
 		js: 'src/js/**/*.js',
 		fonts: 'src/fonts/**/*.{eot,svg,ttf,woff}'
 	},
-	mainSass = filter('**/main.scss'),
-	ieSass = filter('**/main-ie.scss'),
 	production = false;
 
 gulp.task('browser-sync', function() {
@@ -95,16 +93,16 @@ gulp.task('templates', function() {
 		.pipe(gulp.dest('output/'))
 });
 
-gulp.task('images', function() {
-	gulp.src('images/**/*.{png,jpg,jpeg,gif}')
+gulp.task('imgs', function() {
+	gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif}')
 		.pipe(cache(imagemin()))
-		.pipe(gulp.dest('output/images'));
-	gulp.src('images/**/*.svg')
+		.pipe(gulp.dest('output/imgs'));
+	gulp.src('src/imgs/**/*.svg')
 		.pipe(cache(svgmin()))
-		.pipe(gulp.dest('output/images'))
+		.pipe(gulp.dest('output/imgs'))
 		.pipe(cache(svg2png()))
 		.pipe(cache(imagemin()))
-		.pipe(gulp.dest('output/images'));
+		.pipe(gulp.dest('output/imgs'));
 });
 
 gulp.task('copy', function() {
@@ -124,7 +122,7 @@ gulp.task('clean', function() {
 gulp.task('watch', function() {
 	gulp.watch(paths.jade, ['templates']);
 	gulp.watch(paths.scss, ['sass']);
-	gulp.watch(paths.imgs, ['images']);
+	gulp.watch(paths.imgs, ['imgs']);
 	gulp.watch(paths.js, ['js']);
 	gulp.watch(paths.fonts, ['copy']);
 	gulp.watch(['output/**/*', '!output/ie-styles.css'], function(e) {
@@ -135,7 +133,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['clean'], function() {
-	gulp.start('sass', 'copy', 'images', 'ie8', 'js', 'templates');
+	gulp.start('sass', 'copy', 'imgs', 'ie8', 'js', 'templates');
 });
 
 gulp.task('open', ['browser-sync', 'connect', 'watch']);

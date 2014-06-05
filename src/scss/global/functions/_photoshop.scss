@@ -9,7 +9,7 @@
 		distance: 0,
 		size: 0,
 		choke: 0,
-		color: #fff,
+		color: #000,
 	), $conf);
 
 	$angle: map-get($conf, angle);
@@ -50,5 +50,18 @@
 		$color: rgba($color, $opacity);
 	}
 
-	@return ($h-shadow, $v-shadow, $blur, $spread, $color)
+	@if ($h-shadow == 0) {
+		$h-shadow: 0;
+	}
+	@if ($v-shadow == 0) {
+		$v-shadow: 0;
+	}
+	@if ($blur == 0) {
+		$blur: 0;
+	}
+	@if ($spread == 0) {
+		$spread: 0;
+	}
+
+	@return (if(map-get($conf, inset), inset, unquote('')) $h-shadow $v-shadow $blur $spread $color);
 }

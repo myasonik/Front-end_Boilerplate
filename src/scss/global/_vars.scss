@@ -7,6 +7,12 @@ $palettes: (
 
 );
 
+$breakpoints: (
+	hires: (
+		1: min-resolution 1.5dppx // breakpoint fills in the rest of the fallback
+	)
+);
+
 $fallback: Helvetica, Arial, sans-serif;
 $regular: '', $fallback;
 $reg: $regular;
