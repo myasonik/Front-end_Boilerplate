@@ -7,10 +7,15 @@ $palettes: (
 
 );
 
+// Default is 100
 $breakpoints: (
 	hires: (
-		1: min-resolution 1.5dppx // breakpoint fills in the rest of the fallback
+		100: min-resolution 1.5dppx // breakpoint fills in the rest of the fallback
 	)
+);
+
+$z-index: (
+
 );
 
 $fallback: Helvetica, Arial, sans-serif;
