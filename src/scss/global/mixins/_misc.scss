@@ -18,7 +18,5 @@
 
 // breakpoint framework passthrough mixin, takes map data
 @mixin bp($bp, $step, $no-query-flag) {
-	@include breakpoint(map-get(map-get($breakpoint, $bp), $step), $no-query: $no-query-flag) {
-		@content
-	}
+	@content;
 }
