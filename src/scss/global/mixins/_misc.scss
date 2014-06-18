@@ -1,0 +1,24 @@
+// When an element gets some 'attention'
+@mixin attention($active-class: '') {
+	@if $active-class != '' {
+		&.#{$active-class},
+		&:hover,
+		&:active,
+		&:focus {
+			@content;
+		}
+	} @else {
+		&:hover,
+		&:active,
+		&:focus {
+			@content;
+		}
+	}
+}
+
+// breakpoint framework passthrough mixin, takes map data
+@mixin bp($bp, $step, $no-query-flag) {
+	@include breakpoint(map-get(map-get($breakpoint, $bp), $step), $no-query: $no-query-flag) {
+		@content
+	}
+}
