@@ -1,12 +1,16 @@
 // pass in an opacity from 0 to 1
 // ie8 filter and spec versions outputted
 @mixin ie8-opacity($opacity) {
-	@warn 'ie8-opacity expects opacity to be from 0 to 1';
-	@if $ie8 {
-		$opacity: $opacity * 100;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity})";
+	
+	@if $opacity > 1 {
+		@warn 'ie8-opacity expects opacity to be from 0 to 1';
 	} @else {
-		opacity: $opacity;
+		@if $ie8 {
+			$opacity: $opacity * 100;
+			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity})";
+		} @else {
+			opacity: $opacity;
+		}
 	}
 }
 
