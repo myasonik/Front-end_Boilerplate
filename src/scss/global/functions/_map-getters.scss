@@ -1,11 +1,19 @@
 @function z($layer) {
 	@if not map-has-key($z-layers, $layer) {
 		@warn "No layer found for `#{$layer}` in $z-layers map. Property omitted.";
+		@return '';
+	} @else {
+		@return map-get($z-layers, $layer);
 	}
-
-	@return map-get($z-layers, $layer);
 }
 
 @function palette($palette, $tone: 'base') {
-	@return map-get(map-get($palettes, $palette), $tone);
+	@if not map-has-key($palettes, $palette) {
+		@warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";
+	} @else if not map-has-key(map-get($palettes, $palette), $tone) {
+		@warn "No color tone found for `#{$tone}` in $palettes.#{$palette} map. Property omitted.";
+	} @else {
+		@return map-get(map-get($palettes, $palette), $tone);
+	}
+	@return '';
 }

@@ -1,38 +1,39 @@
 'use strict';
 
-var gulp			= require('gulp'),
+var del				= require('del'),
+	gulp			= require('gulp'),
 	should			= require('gulp-if'),
-	clean			= require('gulp-clean'),
+	notify			= require('gulp-notify'),
 	rename			= require('gulp-rename'),
 	concat			= require('gulp-concat'),
 	browserSync		= require('browser-sync'),
 	connect			= require('gulp-connect'),
 	plumber			= require('gulp-plumber'),
 	// (S)CSS STUFF
-	sass 			= require('gulp-ruby-sass'),
-	autoprefixer 	= require('gulp-autoprefixer'),
-	minifycss 		= require('gulp-minify-css'),
+	sass			= require('gulp-ruby-sass'),
+	autoprefixer	= require('gulp-autoprefixer'),
+	minifycss		= require('gulp-minify-css'),
 	cmq				= require('gulp-combine-media-queries'),
 	// image stuff
-	cache 			= require('gulp-cache'),
-	imagemin 		= require('gulp-imagemin'),
-	svg2png 		= require('gulp-svg2png'),
+	cache			= require('gulp-cache'),
+	imagemin		= require('gulp-imagemin'),
+	svg2png			= require('gulp-svg2png'),
 	// js stuff
-	jshint 			= require('gulp-jshint'),
-	stylish 		= require('jshint-stylish'),
-	uglify 			= require('gulp-uglify'),
+	jshint			= require('gulp-jshint'),
+	stylish			= require('jshint-stylish'),
+	uglify			= require('gulp-uglify'),
 	// jade stuff
-	jade 			= require('gulp-jade'),
+	jade			= require('gulp-jade'),
 	// variables
 	production = false;
 
 gulp.task('sass', function() {
-	gulp.src('src/scss/**/*.scss')
-		.pipe(plumber())
-		.pipe(sass({ loadPath: ['./bower_components'] }))
+	gulp.src([ 'src/scss/**/*.scss', 'breakpoint-sass/**/*.scss' ])
+		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
+		.pipe(sass({ loadPath: [process.cwd() + '/bower_components'] }))
 		.pipe(autoprefixer('> 0%'))
 		.pipe(should(production, cmq({ log: true })))
-		.pipe(should(production, rename({suffix: '.min'})))
+		.pipe(should(production, rename({ suffix: '.min' })))
 		.pipe(should(production, minifycss()))
 		.pipe(gulp.dest('output/'));
 });
@@ -48,14 +49,20 @@ gulp.task('ie8', function() {
 });
 
 gulp.task('lint-js', function() {
-	return gulp.src('js/main.js')
+	return gulp.src('src/js/**/*.js')
 		.pipe(jshint())
-		.pipe(jshint.reporter('jshint-stylish'));
+		.pipe(notify(function (file) {
+			if (file.jshint.success) return false;
+			var errors = file.jshint.results.map(function (data) {
+				if (data.error) return '(' + data.error.line + ') ' + data.error.reason;
+			}).join('\n');
+			return file.relative + ' (' + file.jshint.results.length + ' errors)\n' + errors;
+		}));
 });
 
 gulp.task('js', ['lint-js'], function() {
 	gulp.src('src/js/**/*.js')
-		.pipe(plumber())
+		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
 		.pipe(concat('main.js'))
 		.pipe(should(production, uglify()))
 		.pipe(should(production, rename({ suffix: '.min' })))
@@ -64,20 +71,32 @@ gulp.task('js', ['lint-js'], function() {
 
 gulp.task('templates', function() {
 	gulp.src('src/jade/*.jade')
-		.pipe(plumber())
+		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
 		.pipe(jade({
 			basedir: './src/jade',
 			pretty: true,
 			locals: { production: production }
 		}))
-		.pipe(gulp.dest('output/'))
+		.pipe(gulp.dest('output/'));
 });
 
 gulp.task('imgs', function() {
+	// Can't do this until https://github.com/wearefractal/vinyl-fs/issues/25
+	// gulp.src('src/imgs/**/*.svg')
+	// 	.pipe(svg2png())
+	// 	.pipe(gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif,svg}'))
+	// 	.pipe(should(production, imagemin({
+	// 		progressive: true,
+	// 		interlaced: true
+	// 	})))
+	// 	.pipe(gulp.dest('output/imgs'));
 	gulp.src('src/imgs/**/*.svg')
 		.pipe(should(production, imagemin()))
+		.pipe(gulp.dest('output/imgs'))
 		.pipe(svg2png())
-		.pipe(gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif}'))
+		.pipe(should(production, imagemin()))
+		.pipe(gulp.dest('output/imgs'));
+	gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif}')
 		.pipe(should(production, imagemin({
 			progressive: true,
 			interlaced: true
@@ -94,10 +113,7 @@ gulp.task('copy', function() {
 		.pipe(gulp.dest('output/js/'));
 });
 
-gulp.task('clean', function() {
-	return gulp.src(['output/**/*', '!.*'], { read: false })
-		.pipe(clean());
-});
+gulp.task('clean', del.bind(null, ['output/**/*', '!.*']));
 
 gulp.task('watch', function() {
 	browserSync.init(null, {

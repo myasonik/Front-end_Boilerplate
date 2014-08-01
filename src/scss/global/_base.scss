@@ -21,11 +21,16 @@
 ::selection { @extend %selection !optional; }
 
 html {
-
+	box-sizing: border-box;
 }
 
 body {
 	font: 62.5%/1.25 $regular;
+	
+}
+
+body,
+input {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
