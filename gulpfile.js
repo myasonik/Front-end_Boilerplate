@@ -11,16 +11,11 @@ var del				= require('del'),
 	plumber			= require('gulp-plumber'),
 	// (S)CSS STUFF
 	sass			= require('gulp-ruby-sass'),
-	autoprefixer	= require('gulp-autoprefixer'),
-	minifycss		= require('gulp-minify-css'),
-	cmq				= require('gulp-combine-media-queries'),
+	postcss			= require('gulp-postcss'),
 	// image stuff
-	cache			= require('gulp-cache'),
 	imagemin		= require('gulp-imagemin'),
-	svg2png			= require('gulp-svg2png'),
 	// js stuff
 	jshint			= require('gulp-jshint'),
-	stylish			= require('jshint-stylish'),
 	uglify			= require('gulp-uglify'),
 	// jade stuff
 	jade			= require('gulp-jade'),
@@ -28,24 +23,27 @@ var del				= require('del'),
 	production = false;
 
 gulp.task('sass', function() {
-	gulp.src([ 'src/scss/**/*.scss', 'breakpoint-sass/**/*.scss' ])
-		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
-		.pipe(sass({ loadPath: [process.cwd() + '/bower_components'] }))
-		.pipe(autoprefixer('> 0%'))
-		.pipe(should(production, cmq({ log: true })))
-		.pipe(should(production, rename({ suffix: '.min' })))
-		.pipe(should(production, minifycss()))
-		.pipe(gulp.dest('output/'));
-});
+	var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
+	
+	if (production) {
+		postpros.push(
+			require('css-mqpacker'),
+			require('csswring')({ preserveHacks: true, removeAllComments: true })
+		);
+	}
 
-gulp.task('ie8', function() {
 	gulp.src([
-		'bower_components/html5shiv/dist/html5shiv.min.js',
-		'bower_components/selectivizr/selectivizr.js'
-		])
-		.pipe(concat('ie8.min.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('output/js/'))
+		'breakpoint-sass/**/*.scss',
+		'src/scss/**/*.scss'
+	])
+		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
+		.pipe(sass({
+			'sourcemap=none': true,
+			loadPath: [process.cwd() + '/bower_components']
+		}))
+		.pipe(postcss(postpros))
+		.pipe(should(production, rename({ suffix: '.min' })))
+		.pipe(gulp.dest('output/'));
 });
 
 gulp.task('lint-js', function() {
@@ -81,22 +79,7 @@ gulp.task('templates', function() {
 });
 
 gulp.task('imgs', function() {
-	// Can't do this until https://github.com/wearefractal/vinyl-fs/issues/25
-	// gulp.src('src/imgs/**/*.svg')
-	// 	.pipe(svg2png())
-	// 	.pipe(gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif,svg}'))
-	// 	.pipe(should(production, imagemin({
-	// 		progressive: true,
-	// 		interlaced: true
-	// 	})))
-	// 	.pipe(gulp.dest('output/imgs'));
-	gulp.src('src/imgs/**/*.svg')
-		.pipe(should(production, imagemin()))
-		.pipe(gulp.dest('output/imgs'))
-		.pipe(svg2png())
-		.pipe(should(production, imagemin()))
-		.pipe(gulp.dest('output/imgs'));
-	gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif}')
+	gulp.src('src/imgs/**/*.{png,jpg,jpeg,gif,svg}')
 		.pipe(should(production, imagemin({
 			progressive: true,
 			interlaced: true
@@ -140,7 +123,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['clean'], function() {
-	gulp.start('sass', 'copy', 'imgs', 'ie8', 'js', 'templates');
+	gulp.start('sass', 'copy', 'imgs', 'js', 'templates');
 });
 
 gulp.task('prod', function() {

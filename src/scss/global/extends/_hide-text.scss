@@ -1,7 +1,5 @@
 %hide-text {
-	font:0/0 a;
-	width:0;
-	height:0;
-	text-overflow:'';
-	color:transparent;
+	text-indent: 101%;
+	white-space: nowrap;
+	overflow: hidden;
 }

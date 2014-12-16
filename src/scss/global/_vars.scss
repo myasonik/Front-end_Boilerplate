@@ -16,4 +16,15 @@ $regular: '', $fallback;
 $reg: $regular;
 
 // BREAKPOINTS
-$hi-res: min-resolution 1.5dppx // can never remember the query so here it is; breakpoint fills in the rest of the fallback
+$hi-res: min-resolution 1.5dppx;
+$tablet-narrow: 720px;
+$tablet-wide: 1024px;
+$laptop: 1200px;
+$desktop: 1600px;
+
+// MQPacker Order Definition
+@include mq($mobile-wide) { /* 480px */ }
+@include mq($tablet-narrow) { /* 720px */ }
+@include mq($tablet-wide) { /* 1024px */ }
+@include mq($laptop) { /* 1200px */ }
+@include mq($desktop) { /* 1600px */ }
