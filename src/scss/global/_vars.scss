@@ -1,8 +1,3 @@
-$ie8: false !default;
-
-$base-font-size: 16;
-$base-line-height: 1.25;
-
 $palettes: (
 
 );
@@ -17,6 +12,7 @@ $reg: $regular;
 
 // BREAKPOINTS
 $hi-res: min-resolution 1.5dppx;
+$mobile-wide: 480px;
 $tablet-narrow: 720px;
 $tablet-wide: 1024px;
 $laptop: 1200px;
