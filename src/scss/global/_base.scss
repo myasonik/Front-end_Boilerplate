@@ -12,13 +12,11 @@
 	}
 }
 
-%selection {
+::selection {
 	// background-color:;
 	// color:;
 	// text-shadow:;
 }
-::moz-selection { @extend %selection !optional; }
-::selection { @extend %selection !optional; }
 
 html {
 	box-sizing: border-box;
@@ -26,7 +24,6 @@ html {
 
 body {
 	font: 62.5%/1.25 $regular;
-	
 }
 
 body,

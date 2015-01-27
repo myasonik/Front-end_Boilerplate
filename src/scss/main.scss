@@ -1,4 +1,4 @@
-@import 'breakpoint-sass/stylesheets/breakpoint';
+@import 'vendor/breakpoint/stylesheets/breakpoint';
 
 @import 'global/extends/clearfix';
 @import 'global/extends/hide-text';
@@ -6,16 +6,8 @@
 @import 'global/extends/reset';
 
 @import 'global/functions/map-getters';
-@import 'global/functions/math';
-@import 'global/functions/parseInt';
-@import 'global/functions/photoshop';
-@import 'global/functions/toDegrees';
 
-@import 'global/mixins/misc';
-@import 'global/mixins/photoshop';
-@import 'global/mixins/px-rem';
+@import 'global/mixins/attention';
 
 @import 'global/vars';
 @import 'global/base';
-
-// @import 'global/vendor/';

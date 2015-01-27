@@ -19,11 +19,8 @@ html(lang="en")
 	body
 		block body
 
-	script(src='//code.jquery.com/jquery-2.1.1.min.js')
-	script(type='text/javascript').
-		window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>');
 	if !production
-		script(src='js/main.js')
+		script(src='main.js')
 	else
-		script(src='js/main.min.js')
+		script(src='main.min.js')
 	block scripts

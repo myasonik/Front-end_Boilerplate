@@ -5,7 +5,6 @@ var del				= require('del'),
 	should			= require('gulp-if'),
 	notify			= require('gulp-notify'),
 	rename			= require('gulp-rename'),
-	concat			= require('gulp-concat'),
 	browserSync		= require('browser-sync'),
 	connect			= require('gulp-connect'),
 	plumber			= require('gulp-plumber'),
@@ -15,11 +14,17 @@ var del				= require('del'),
 	// image stuff
 	imagemin		= require('gulp-imagemin'),
 	// js stuff
-	jshint			= require('gulp-jshint'),
 	uglify			= require('gulp-uglify'),
+	jshint			= require('gulp-jshint'),
+	source			= require('vinyl-source-stream'),
+	to5ify			= require("6to5ify"),
+	watchify		= require('watchify'),
+	streamify		= require('gulp-streamify'),
+	browserify		= require('browserify'),
 	// jade stuff
 	jade			= require('gulp-jade'),
 	// variables
+	watch = false,
 	production = false;
 
 gulp.task('sass', function() {
@@ -32,39 +37,11 @@ gulp.task('sass', function() {
 		);
 	}
 
-	gulp.src([
-		'breakpoint-sass/**/*.scss',
-		'src/scss/**/*.scss'
-	])
-		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
-		.pipe(sass({
-			'sourcemap=none': true,
-			loadPath: [process.cwd() + '/bower_components']
-		}))
+	sass('src/scss/main.scss')
+		.on('error', notify.onError('<%= error.message %>'))
 		.pipe(postcss(postpros))
 		.pipe(should(production, rename({ suffix: '.min' })))
 		.pipe(gulp.dest('output/'));
-});
-
-gulp.task('lint-js', function() {
-	return gulp.src('src/js/**/*.js')
-		.pipe(jshint())
-		.pipe(notify(function (file) {
-			if (file.jshint.success) return false;
-			var errors = file.jshint.results.map(function (data) {
-				if (data.error) return '(' + data.error.line + ') ' + data.error.reason;
-			}).join('\n');
-			return file.relative + ' (' + file.jshint.results.length + ' errors)\n' + errors;
-		}));
-});
-
-gulp.task('js', ['lint-js'], function() {
-	gulp.src('src/js/**/*.js')
-		.pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
-		.pipe(concat('main.js'))
-		.pipe(should(production, uglify()))
-		.pipe(should(production, rename({ suffix: '.min' })))
-		.pipe(gulp.dest('output/js/'));
 });
 
 gulp.task('templates', function() {
@@ -91,14 +68,53 @@ gulp.task('copy', function() {
 	// Fonts
 	gulp.src('src/fonts/**/*.{eot,svg,ttf,woff}')
 		.pipe(gulp.dest('output/fonts'));
-	// JQuery fallback
-	gulp.src('bower_components/jquery/jquery.min.js')
-		.pipe(gulp.dest('output/js/'));
+});
+
+gulp.task('lint-js', function() {
+	return gulp.src('src/js/**/*.js')
+		.pipe(jshint())
+		.pipe(notify(function (file) {
+			if (file.jshint.success) return false;
+			var errors = file.jshint.results.map(function (data) {
+				if (data.error) return '(' + data.error.line + ') ' + data.error.reason;
+			}).join('\n');
+			return file.relative + ' (' + file.jshint.results.length + ' errors)\n' + errors;
+		}));
+});
+
+function doBrowserify(b) {
+	b.bundle()
+		.on('error', notify.onError('<%= error.message %>'))
+		.pipe(source('main.js'))
+		.pipe(should(production, streamify(uglify())))
+		.pipe(should(production, rename({ suffix: '.min' })))
+		.pipe(gulp.dest('output/'));
+}
+
+gulp.task('js', ['lint-js'], function() {
+	var b = browserify({
+				transform: [to5ify],
+					debug: !production
+			});
+
+	if (watch) {
+		b = watchify(b);
+		b.on('update', function() {
+			doBrowserify(b);
+		});
+	}
+
+	b.add('./src/js/main.js')
+	doBrowserify(b);
 });
 
 gulp.task('clean', del.bind(null, ['output/**/*', '!.*']));
 
 gulp.task('watch', function() {
+	watch = true;
+
+	gulp.start('js');
+
 	browserSync.init(null, {
 		server: { baseDir: './output/' },
 		notify: false,
@@ -113,7 +129,6 @@ gulp.task('watch', function() {
 	gulp.watch('src/jade/**/*.jade', ['templates']);
 	gulp.watch('src/scss/**/*.scss', ['sass']);
 	gulp.watch('src/imgs/**/*.{png,jpg,jpeg,gif,svg}', ['imgs']);
-	gulp.watch('src/js/**/*.js', ['js']);
 	gulp.watch('src/fonts/**/*.{eot,svg,ttf,woff}', ['copy']);
 	gulp.watch(['output/**/*'], function(e) {
 		gulp.src(e.path)
