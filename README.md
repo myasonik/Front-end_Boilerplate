@@ -1,6 +1,7 @@
 # Front-end Boilerplate
+
 ## Using Gulp, Browserify, Jade & Sass
----
+
 * Dependencies: node, (ruby) sass, gulp
 * To start run `npm install`
 * `gulp` will build the site
