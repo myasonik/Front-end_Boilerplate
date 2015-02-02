@@ -10,7 +10,7 @@ var jadeSrc = './' + config.src + 'jade/';
 $.gulp.task('templates', function() {
 	$.gulp.src(jadeSrc + '**/*.jade')
 		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
-		// .pipe(jadeInheritance({ basedir: jadeSrc }))
+		.pipe(jadeInheritance({ basedir: jadeSrc }))
 		.pipe(jade({
 			basedir: jadeSrc,
 			pretty: true,

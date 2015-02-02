@@ -7,7 +7,6 @@ var browserSync = require('browser-sync');
 $.gulp.task('watching', function() {
 	browserSync({
 		server: { baseDir: config.dest },
-		files: config.watchDest,
 		notify: false,
 		open: false
 	});
@@ -22,6 +21,7 @@ $.gulp.task('watching', function() {
 	$.gulp.watch(config.src + 'imgs/**/*.{png,jpg,jpeg,gif,svg}', ['imgs']);
 	$.gulp.watch(config.watchDest, function(e) {
 		$.gulp.src(e.path)
+			.pipe(browserSync.reload({ stream:true }))
 			.pipe(connect.reload());
 	});
 
