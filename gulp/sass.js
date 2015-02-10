@@ -16,13 +16,13 @@ $.gulp.task('sass', function() {
 	}
 
 	sass(config.src + 'scss/main.scss', {
-		sourcemap: true ,
+		sourcemap: !config.prod,
 		style: 'expanded',
 		precision: 4
 	})
 		.on('error', $.notify.onError('<%= error.message %>'))
 		.pipe(postcss(postpros))
 		.pipe($.should(config.prod, $.rename({ suffix: '.min' })))
-		.pipe(sourcemaps.write())
+		.pipe($.should(!config.prod,sourcemaps.write()))
 		.pipe($.gulp.dest(config.dest));
 });
