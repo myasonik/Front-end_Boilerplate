@@ -1,8 +1,8 @@
-@function z($layer) {
-	@if not map-has-key($z-layers, $layer) {
-		@error 'No layer found for `#{$layer}` in $z-layers map.';
+@function z($index) {
+	@if not map-has-key($z-index, $index) {
+		@error 'No index found for `#{$index}` in $z-indexs map.';
 	} @else {
-		@return map-get($z-layers, $layer);
+		@return map-get($z-index, $index);
 	}
 	@error 'Unexpected error.';
 }
@@ -14,15 +14,6 @@
 		@error 'No color tone found for `#{$tone}` in $palettes.#{$palette} map.';
 	} @else {
 		@return map-get(map-get($palettes, $palette), $tone);
-	}
-	@error 'Unexpected error.';
-}
-
-@function mq($query) {
-	@if not map-has-key($mq, $query) {
-		@error 'No query found for `#{$query}` in $mq map.';
-	} @else {
-		@return map-get($mq, $query);
 	}
 	@error 'Unexpected error.';
 }

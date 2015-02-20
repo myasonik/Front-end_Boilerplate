@@ -19,6 +19,7 @@ $.gulp.task('watching', function() {
 	$.gulp.watch(config.src + 'jade/**/*.jade', ['templates']);
 	$.gulp.watch(config.src + 'scss/**/*.scss', ['sass']);
 	$.gulp.watch(config.src + 'imgs/**/*.{png,jpg,jpeg,gif,svg}', ['imgs']);
+	$.gulp.watch(config.src + 'js/**/*.js', ['lint-js']);
 	$.gulp.watch(config.watchDest, function(e) {
 		$.gulp.src(e.path)
 			.pipe(browserSync.reload({ stream:true }))
