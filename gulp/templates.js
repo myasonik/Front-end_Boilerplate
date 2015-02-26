@@ -8,7 +8,7 @@ var filter = require('gulp-filter');
 var jadeSrc = './' + config.src + 'jade/';
 
 $.gulp.task('templates', function() {
-	$.gulp.src(jadeSrc + '**/*.jade')
+	return $.gulp.src(jadeSrc + '**/*.jade')
 		.pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
 		.pipe(jadeInheritance({ basedir: jadeSrc }))
 		.pipe(jade({
@@ -23,5 +23,5 @@ $.gulp.task('templates', function() {
 
 			return !exclue.test(file.path);
 		}))
-		.pipe($.gulp.dest(config.dest));
+		.pipe($.gulp.dest(config.dest));	
 });

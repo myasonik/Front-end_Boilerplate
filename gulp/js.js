@@ -8,7 +8,7 @@ var to5ify = require("babelify");
 var watchify = require('watchify');
 var streamify = require('gulp-streamify');
 var browserify = require('browserify');
-var collapse = require('bundle-collapser/plugin')
+var collapse = require('bundle-collapser/plugin');
 
 $.gulp.task('lint-js', function() {
 	return $.gulp.src(config.src + 'js/**/*.js')
