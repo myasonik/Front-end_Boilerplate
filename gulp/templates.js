@@ -17,11 +17,11 @@ $.gulp.task('templates', function() {
 			locals: { production: config.prod }
 		}))
 		.pipe(filter(function(file) {
-			var exclue;
-			if (config.outputJadeIncludes) exclue = new RegExp('templates|mixins', 'g');
-			else exclue = new RegExp('templates|mixins|includes', 'g');
+			var exclude;
+			if (config.outputJadeIncludes) exclude = new RegExp('templates|mixins', 'g');
+			else exclude = new RegExp('templates|mixins|includes', 'g');
 
-			return !exclue.test(file.path);
+			return !exclude.test(file.path);
 		}))
 		.pipe($.gulp.dest(config.dest));	
 });

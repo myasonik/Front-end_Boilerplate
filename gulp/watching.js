@@ -5,9 +5,20 @@ var browserSync = require('browser-sync');
 
 $.gulp.task('watching', function() {
 	browserSync({
-		server: { baseDir: config.dest },
+		server: {
+			baseDir: config.dest,
+			middleware: function(req, res, next) {
+				if (config.extensionlessRoutes) {
+					if (req.url.indexOf('.') < 1) {
+						req.url += '.html';
+					}
+				}
+
+				return next();
+			}
+		},
 		notify: false,
-		open: false
+		open: false,
 	});
 
 	$.gulp.watch(config.src + 'jade/**/*.jade', ['templates', browserSync.reload]);
