@@ -4,6 +4,6 @@ module.exports = {
 	src: 'src/',
 	dest: './output/',
 	outputJadeIncludes: true,
-	watchDest: ['output/**.*', '!output/**/*.html'],
+	watchDest: ['output/**/*', '!output/**/*.html'],
 	extensionlessRoutes: false // WARNING: Experimental
 };
