@@ -18,7 +18,7 @@ $.gulp.task('watching', function() {
 			}
 		},
 		notify: false,
-		open: false,
+		open: false
 	});
 
 	$.gulp.watch(config.src + 'jade/**/*.jade', ['templates', browserSync.reload]);
