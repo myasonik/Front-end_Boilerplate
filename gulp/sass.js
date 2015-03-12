@@ -18,7 +18,8 @@ $.gulp.task('sass', function() {
 	sass(config.src + 'scss/main.scss', {
 		sourcemap: !config.prod,
 		style: 'expanded',
-		precision: 4
+		precision: 4,
+		loadPath: './node_modules'
 	})
 		.on('error', $.notify.onError('<%= error.message %>'))
 		.pipe(postcss(postpros))
