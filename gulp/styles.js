@@ -5,7 +5,7 @@ var sass = require('gulp-ruby-sass');
 var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 
-$.gulp.task('sass', function() {
+$.gulp.task('styles', function() {
     var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
     
     if (config.prod) {
@@ -15,7 +15,7 @@ $.gulp.task('sass', function() {
         );
     }
 
-    sass(config.src + 'scss/main.scss', {
+    sass(config.src + 'styles/main.scss', {
         sourcemap: !config.prod,
         style: 'expanded',
         precision: 4,

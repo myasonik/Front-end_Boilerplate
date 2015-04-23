@@ -5,9 +5,9 @@ var jade = require('gulp-jade');
 var jadeInheritance = require('gulp-jade-inheritance');
 var filter = require('gulp-filter');
 
-var jadeSrc = './' + config.src + 'jade/';
+var jadeSrc = './' + config.src + 'views/';
 
-$.gulp.task('templates', function() {
+$.gulp.task('views', function() {
     return $.gulp.src(jadeSrc + '**/*.jade')
         .pipe($.plumber({ errorHandler: $.notify.onError('<%= error.message %>') }))
         .pipe(jadeInheritance({ basedir: jadeSrc }))

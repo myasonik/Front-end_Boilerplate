@@ -35,7 +35,6 @@
 
         // vars
         "no-catch-shadow": 2,
-        "no-undefined": 2,
 
         // node
         "no-mixed-requires": [2, true],
