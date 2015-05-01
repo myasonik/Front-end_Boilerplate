@@ -3,7 +3,6 @@ var config = require('./config.js');
 
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
-var jshint = require('gulp-jshint');
 var source = require('vinyl-source-stream');
 var to5ify = require("babelify");
 var watchify = require('watchify');
