@@ -61,7 +61,7 @@
         // es6
         "no-var": 2,
         "generator-star-spacing": [2, "before"],
-        "object-shorthand": [2, "always"]
+        // "object-shorthand": [2, "always"] not available yet in whatever plugin I'm using but a new rule in eslint
 
         // legacy
         "no-bitwise": 2
