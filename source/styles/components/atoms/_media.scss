@@ -1,0 +1,43 @@
+// Basic media object
+// 
+// .media__img - left to right
+// .media__img.media__img--rev - right to left
+// 
+// markup:
+// <div class="media">
+//   <div class="{$modifiers}">
+//     <img src="//placesheen.com/200/300" alt="placeholder">
+//   </div>
+//   <div class="media__info">
+//     <p>
+//       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet nibh sit amet ex porttitor pulvinar. Donec dictum quam lorem, quis ullamcorper purus iaculis quis. Duis non efficitur purus. In placerat orci in tincidunt tincidunt. Integer vestibulum scelerisque nunc eget luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus tristique bibendum semper. Aenean id suscipit orci, id fermentum urna. Quisque convallis id dui vel luctus. Duis sapien leo, eleifend ut odio vel, ultrices congue purus. Quisque vel urna lectus.
+//     </p>
+//   </div>
+// </div>
+// 
+// Styleguide 1.1
+
+.media {
+    @include cf;
+    display: block;
+
+    &__img {
+        float: left;
+        margin-right: 1em;
+
+        &--rev {
+            float: right;
+            margin-right: 0;
+            margin-left: 1em;
+        }
+
+        > img {
+            display: block;
+        }
+    }
+
+    &__info {
+        overflow: hidden;
+    }
+
+}

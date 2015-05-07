@@ -1,4 +1,8 @@
 // When an element gets some 'attention'
+// 
+// $active-class - A class you might want to toggle via JS
+// 
+// Styleguide 7.2.1
 @mixin attention($active-class: '') {
     @if $active-class != '' {
         &.#{$active-class},
@@ -14,4 +18,5 @@
             @content;
         }
     }
+    
 }

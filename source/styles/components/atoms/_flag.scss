@@ -1,0 +1,58 @@
+// Basic flag object
+// 
+// .flag - regular
+// .flag.flag--top - top align
+// .flag.flag--bottom - bottom align
+// .flag.flag--rev - right to left (requires moving `.flag__img` after `.flag__info`)
+// 
+// markup:
+// <div class="{$modifiers}">
+//   <div class="flag__img">
+//     <img src="//placesheen.com/200/300" alt="placeholder">
+//   </div>
+//   <div class="flag__info">
+//     <p>
+//       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet nibh sit amet ex porttitor pulvinar. Donec dictum quam lorem, quis ullamcorper purus iaculis quis. Duis non efficitur purus. In placerat orci in tincidunt tincidunt. Integer vestibulum scelerisque nunc eget luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus tristique bibendum semper. Aenean id suscipit orci, id fermentum urna. Quisque convallis id dui vel luctus. Duis sapien leo, eleifend ut odio vel, ultrices congue purus. Quisque vel urna lectus.
+//     </p>
+//   </div>
+// </div>
+// 
+// Styleguide 1.2
+
+.flag {
+    display: table;
+    width: 100%;
+
+    &__img,
+    &__info {
+        display: table-cell;
+        vertical-align: middle;
+    
+        .flag--top & {
+            vertical-align: top;
+        }
+
+        .flag--bottom & {
+            vertical-align: bottom;
+        }
+    }
+
+    &__img {
+        padding-right: 1em;
+
+        > img {
+            display: block;
+            max-width: none;
+        }
+
+        .flag--rev & {
+            padding-right: 0;
+            padding-left: 1em;
+        }
+    }
+
+    &__info {
+        width: 100%;
+    }
+
+}

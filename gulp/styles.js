@@ -6,21 +6,19 @@ var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 var styleguide = require('sc5-styleguide');
 
-var source = config.src + 'styles/*.scss';
-
 $.gulp.task('generate-styleguide', function() {
-    return $.gulp.src(source)
+    return $.gulp.src(config.src + 'styles/**/*.scss')
         .pipe(styleguide.generate({
-            title: 'Boilerplate Styleguide',
+            title: 'Styleguide',
             server: true,
             port: 3002,
             rootPath: config.dest + '/styleguide/',
             overviewPath: 'README.md'
         }))
-        .pipe($.gulp.dest(config.dest));
+        .pipe($.gulp.dest(config.dest + '/styleguide/'));
 });
 
-$.gulp.task('create-styleguide', ['generate-styleguide'], function() {
+$.gulp.task('create-styleguide', function() {
     var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
     
     if (config.prod) {
@@ -31,7 +29,7 @@ $.gulp.task('create-styleguide', ['generate-styleguide'], function() {
         );
     }
 
-    return $.gulp.src(source)
+    return $.gulp.src(config.src + 'styles/*.scss')
         .pipe($.should(!config.prod, sourcemaps.init()))
         .pipe(sass({
             percision: 4,
@@ -44,9 +42,9 @@ $.gulp.task('create-styleguide', ['generate-styleguide'], function() {
         .pipe($.gulp.dest(config.dest + '/styleguide/'));
 });
 
-$.gulp.task('styles', function() {
-    if (config.watch) gulp.start('create-styleguide');
+$.gulp.task('styleguide', ['generate-styleguide', 'create-styleguide']);
 
+$.gulp.task('styles', function() {
     var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
     
     if (config.prod) {
@@ -57,7 +55,7 @@ $.gulp.task('styles', function() {
         );
     }
 
-    $.gulp.src(source)
+    $.gulp.src([config.src + 'styles/main.scss'])
         .pipe($.should(!config.prod, sourcemaps.init()))
         .pipe(sass({
             percision: 4,

@@ -14,7 +14,8 @@
 @import 'global/normalize'; // not in vendor because it's altered
 @import 'global/base';
 
-// @import 'components/atoms/';
+@import 'components/atoms/media';
+@import 'components/atoms/flag';
 
 // @import 'components/modules/';
 
