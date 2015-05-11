@@ -19,8 +19,9 @@ html(lang="en")
     body
         block body
 
-    if !production
-        script(src='main.js')
-    else
-        script(src='main.min.js')
-    block scripts
+        if !production
+            script(src='main.js')
+        else
+            script(src='main.min.js')
+        
+        block scripts
