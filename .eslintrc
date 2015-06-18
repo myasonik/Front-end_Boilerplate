@@ -8,15 +8,17 @@
 
     "rules": {
         // posible errors
-        "no-cond-assign": "always",
+        "no-cond-assign": [2, "always"],
         "no-console": 1,
         "no-debugger": 1,
         "no-reserved-keys": 2,
 
         // best practice
+        "accessor-pairs": [2, {getWithoutSet: true}],
         "block-scoped-var": 2,
         "curly": [2, "multi-line"],
         "default-case": 2,
+        "dot-location": [2, "property"],
         "guard-for-in": 2,
         "no-alert": 1,
         "no-else-return": 2,
@@ -43,25 +45,30 @@
         "indent": 2,
         "brace-style": [2, "1tbs", {"allowSingleLine": true}],
         "comma-style": [2, "last"],
+        "computed-property-spacing": 2,
         "consistent-this": [2, "self"],
+        "lines-around-comment": 2,
         "no-lonely-if": 2,
         "no-multiple-empty-lines": [2, {"max": 2}],
         "no-nested-ternary": 2,
         "no-underscore-dangle": 0,
-        "quote-props": "as-needed",
+        "no-unneeded-ternary": 2,
+        "object-curly-spacing": 2,
+        "quote-props": [2, "as-needed"],
         "quotes": [2, "single", "avoid-escape"],
-        "space-after-keywords": "always",
-        "space-after-blocks": "always",
-        "space-after-function-paren": "never",
+        "space-after-keywords": [2, "always"],
+        "space-before-blocks": [2, "always"],
+        "space-before-function-paren": [2, "never"],
         "space-in-parens": [2, "never"],
+        "spaced-comment": [2, "always", {"exceptions":["-", "=", "/"]}],
         "func-style": [2, "expression"],
-        "space-in-brackets": "never",
-        "func-names": 2,
+        "space-in-brackets": [2, "never"],
 
         // es6
-        "no-var": 2,
         "generator-star-spacing": [2, "before"],
-        // "object-shorthand": [2, "always"] not available yet in whatever plugin I'm using but a new rule in eslint
+        "no-var": 2,
+        "object-shorthand": [2, "always"],
+        "prefer-const": 2,
 
         // legacy
         "no-bitwise": 2
