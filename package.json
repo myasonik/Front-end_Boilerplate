@@ -9,6 +9,7 @@
     "autoprefixer-core": "^5.2.1",
     "babel-eslint": "^4.1.0",
     "babelify": "^6.3.0",
+    "breakpoint-sass": "^2.6.1",
     "browser-sync": "^2.8.2",
     "browserify": "^11.0.1",
     "bundle-collapser": "^1.2.1",
