@@ -1,0 +1,35 @@
+@viewport { width: device-width; }
+
+* {
+    margin: 0;
+    padding: 0;
+    &,
+    &:before,
+    &:after {
+        box-sizing: inherit;
+    }
+}
+
+::selection {
+    // background-color:;
+    // color:;
+    // text-shadow:;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    font: 62.5%/1.25 $regular;
+}
+
+body,
+input {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width:100%;
+}

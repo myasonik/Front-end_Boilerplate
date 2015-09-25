@@ -1,0 +1,23 @@
+@mixin reset-input {
+    border: none;
+    background: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+@mixin reset-button {
+    @include reset-input;
+}
+
+@mixin reset-select {
+    @include reset-input;
+    text-overflow: '';
+    border-radius: 0;
+    text-indent: 0.01px;
+    
+    &::-ms-expand {
+        display: none;
+    }
+}
