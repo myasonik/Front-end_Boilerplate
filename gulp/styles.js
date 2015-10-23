@@ -7,7 +7,7 @@ var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 
 $.gulp.task('styles', function() {
-    var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
+    var postpros = [ require('autoprefixer')({'browsers': '> 0%'}) ];
 
     if (config.prod) {
         postpros.push(
