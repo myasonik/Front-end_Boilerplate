@@ -7,8 +7,8 @@ var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 
 $.gulp.task('styles', function() {
-    var postpros = [ require('autoprefixer-core')({'browsers': '> 0%'}) ];
-    
+    var postpros = [ require('autoprefixer')({'browsers': '> 0%'}) ];
+
     if (config.prod) {
         postpros.push(
             require('css-mqpacker'),
@@ -24,7 +24,7 @@ $.gulp.task('styles', function() {
         .pipe($.should(!config.prod, sourcemaps.init()))
         .pipe(sass({
             percision: 4,
-            includePaths: ['./node_modules', './git_submodules']
+            includePaths: ['./node_modules']
         }).on('error', $.notify.onError('<%= error.message %>')))
         .pipe(postcss(postpros))
         .pipe($.should(config.prod, $.rename({ suffix: '.min' })))

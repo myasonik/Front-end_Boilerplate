@@ -42,3 +42,6 @@ rules:
   # Final Items
   trailing-semicolon: 1
   final-newline: 1
+
+  # Commenting
+  no-css-comments: 0
