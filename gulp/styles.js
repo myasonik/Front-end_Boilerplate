@@ -11,7 +11,7 @@ $.gulp.task('styles', function() {
 
     if (config.prod) {
         postpros.push(
-            require('css-mqpacker'),
+            require('css-mqpacker')({sort: true}),
             require('postcss-zindex'),
             require('csswring')({ preserveHacks: true, removeAllComments: true })
         );
