@@ -7,11 +7,13 @@ var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 
 $.gulp.task('styles', function() {
-    var postpros = [ require('autoprefixer')({'browsers': '> 0%'}) ];
+    var postpros = [
+        require('autoprefixer')({'browsers': '> 0%'}),
+        require('css-mqpacker')({sort: true})
+    ];
 
     if (config.prod) {
         postpros.push(
-            require('css-mqpacker')({sort: true}),
             require('postcss-zindex'),
             require('csswring')({ preserveHacks: true, removeAllComments: true })
         );
