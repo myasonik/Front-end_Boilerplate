@@ -1,5 +1,14 @@
 extends templates/master
 
 block body
+  style.
+    .is-closed {
+      display: none;
+    }
+
+  button(data-modal='modal') Show Modal
+  section#modal
+    h1 Test Modal
+    button(data-modal-close) CLOSE
 
 block scripts
