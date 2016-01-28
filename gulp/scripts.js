@@ -29,7 +29,7 @@ $.gulp.task('scripts', ['lint-scripts'], function() {
     var b = browserify({
         plugin: [collapse],
         debug: !config.prod
-    }).transform('babelify', {presets: ['es2015'']});
+    }).transform('babelify', {presets: ['es2015']});
 
     if (config.watch) {
         b = watchify(b);
