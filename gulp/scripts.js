@@ -23,15 +23,14 @@ $.gulp.task('scripts', ['lint-scripts'], function() {
             .on('error', $.notify.onError('<%= error.message %>'))
             .pipe(source('main.js'))
             .pipe($.should(config.prod, streamify(uglify())))
-            .pipe($.should(config.prod, $.rename({ suffix: '.min' })))
+            .pipe($.should(config.prod, $.rename({suffix: '.min'})))
             .pipe($.gulp.dest(config.dest));
     }
 
     var b = browserify({
-                plugin: [collapse],
-                transform: [to5ify],
-                debug: !config.prod
-            });
+        plugin: [collapse],
+        debug: !config.prod
+    }).transform("babelify", {presets: ["es2015"]});
 
     if (config.watch) {
         b = watchify(b);
