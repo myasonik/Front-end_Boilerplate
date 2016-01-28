@@ -4,7 +4,6 @@ var config = require('./config.js');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 var source = require('vinyl-source-stream');
-var to5ify = require('babelify');
 var watchify = require('watchify');
 var streamify = require('gulp-streamify');
 var browserify = require('browserify');
@@ -30,7 +29,7 @@ $.gulp.task('scripts', ['lint-scripts'], function() {
     var b = browserify({
         plugin: [collapse],
         debug: !config.prod
-    }).transform("babelify", {presets: ["es2015"]});
+    }).transform('babelify', {presets: ['es2015'']});
 
     if (config.watch) {
         b = watchify(b);

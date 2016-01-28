@@ -23,5 +23,5 @@ $.gulp.task('views', function() {
 
             return !exclude.test(file.path);
         }))
-        .pipe($.gulp.dest(config.dest));    
+        .pipe($.gulp.dest(config.dest));
 });

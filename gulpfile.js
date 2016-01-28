@@ -11,7 +11,7 @@ gulp.task('default', ['clean'], function() {
 });
 
 gulp.task('prod', function() {
-    config.prod = true; 
+    config.prod = true;
     gulp.start('default');
 });
 
