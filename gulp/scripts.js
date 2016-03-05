@@ -1,13 +1,14 @@
 var $ = require('./common.js');
 var config = require('./config.js');
-var eslintOptions = require('./eslintOptions.js');
+var eslintOptions = require('../.eslintrc.js');
 
 var eslint = require('gulp-eslint');
-var rollup = require('rollup-stream');
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
+var source = require('vinyl-source-stream');
+var watchify = require('watchify');
+var streamify = require('gulp-streamify');
+var browserify = require('browserify');
+var collapse = require('bundle-collapser/plugin');
 
 $.gulp.task('lint-scripts', function() {
   return $.gulp.src(config.src + 'scripts/**/*.js')
@@ -17,11 +18,27 @@ $.gulp.task('lint-scripts', function() {
 });
 
 $.gulp.task('scripts', ['lint-scripts'], function() {
-  return rollup({entry: './' + config.src + '/scripts/main.js'})
-    // .on('error', $.notify.onError('<%= error.message %>'))
-    .pipe(source('main.js'))
-    // .pipe(buffer())
-    // .pipe($.should(!config.prod, sourcemaps.init({loadMaps: true})))
-    // .pipe($.should(!config.prod, sourcemaps.write('.')))
-    .pipe($.gulp.dest(config.dest));
+  function doBrowserify(b) {
+    b.bundle()
+      .on('error', $.notify.onError('<%= error.message %>'))
+      .pipe(source('main.js'))
+      .pipe($.should(config.prod, streamify(uglify())))
+      .pipe($.should(config.prod, $.rename({suffix: '.min'})))
+      .pipe($.gulp.dest(config.dest));
+  }
+
+  var b = browserify({
+    plugin: [collapse],
+    debug: !config.prod
+  }).transform('babelify', {presets: ['es2015']});
+
+  if (config.watch) {
+    b = watchify(b);
+    b.on('update', function() {
+      doBrowserify(b);
+    });
+  }
+
+  b.add('./' + config.src + '/scripts/main.js')
+  doBrowserify(b);
 });
